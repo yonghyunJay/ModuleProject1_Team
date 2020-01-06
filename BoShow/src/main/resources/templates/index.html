@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/head"></head>
+<body>
+
+	<!-- Navigation -->
+	<nav th:replace="common/nav"></nav>
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<div class="row">
+
+			<div id="keyword" class="col-lg-3">
+
+				<h1 class="my-4">Key words</h1>
+				<div class="list-group" th:if="${session.user_info} != null">
+					<a href="#" class="list-group-item active" id="item1"
+						th:if="${session.user_info.keyword1} != null">[[${session.user_info.keyword1}]]</a>
+					<a href="#" class="list-group-item" id="item2"
+						th:if="${session.user_info.keyword2} != null">[[${session.user_info.keyword2}]]</a>
+					<a href="#" class="list-group-item" id="item3"
+						th:if="${session.user_info.keyword3} != null">[[${session.user_info.keyword3}]]</a>
+					<a href="#" class="list-group-item" id="item4"
+						th:if="${session.user_info.keyword4} != null">[[${session.user_info.keyword4}]]</a>
+					<a href="#" class="list-group-item" id="item5"
+						th:if="${session.user_info.keyword5} != null">[[${session.user_info.keyword5}]]</a>
+				</div>
+
+			</div>
+			<!-- /.col-lg-3 -->
+
+			<div id="view" class="col-lg-9">
+
+				<div class="row">
+
+					<contents th:replace="contents"></contents>
+					
+				</div>
+				<!-- /.row -->
+
+			</div>
+			<!-- /.col-lg-9 -->
+
+		</div>
+		<!-- /.row -->
+
+	</div>
+	<!-- /.container -->
+
+	<!-- Footer -->
+	<footer th:replace="common/footer"></footer>
+	
+	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<script>
+		$('.list-group-item').click(function() {
+			var content = {
+			        title : '',
+			        description : '',
+			        thumbnails : '',
+			        url : ''
+				};
+			
+			var dataSet = new Array();
+
+			console.log(this.id);
+			var selId = '#'+ this.id;
+// 			$.ajax({
+// 				url : '/getYoutube',
+// 				type : 'get',
+// 				data : {
+// 					'youtubeTopic' : $(selId).text()
+// 				},
+// 				async : false,
+// 				success : function(res) {
+// 					var items = res.items;
+// 					for ( var i in items) {
+// 						var title = items[i].snippet.title;
+// 						console.log(title);
+																		
+// 						var description = items[i].snippet.description;
+// 						console.log(description);
+						
+// 						var thumbnails = items[i].snippet.thumbnails.medium.url;
+// 						console.log(thumbnails);
+						
+// 						var datetime = items[i].snippet.publishedAt;
+// 						console.log(datetime);
+// 						var videoId = items[i].id.videoId;
+// 						var url = "https://www.youtube.com/watch?v="
+// 								+ videoId;
+// 						console.log(url);
+
+// 						if(++i > 5)	break;
+// 					}
+// 				}
+// 			});
+			
+			console.log("------------------------------------");
+			
+			$.ajax({
+				url : '/getKakaoVideo',
+				type : 'get',
+				data : {
+					'videoTopic' : $(selId).text()
+				},
+				async : false,
+				success : function(res) {
+					var documents = res.documents;
+					for ( var i in documents) {
+						var title = documents[i].title;
+						console.log(title);
+						
+						var thumbnail = documents[i].thumbnail;
+						console.log(thumbnail);
+						
+						var url = documents[i].url;
+						console.log(url);
+						
+						var datetime = documents[i].datetime;
+						console.log(datetime);
+						
+						if(++i > 5)	break;
+						
+					}
+				}
+			});
+			
+			console.log("------------------------------------");
+			
+			$.ajax({
+				url : '/getKakaoBlog',
+				type : 'get',
+				data : {
+					'blogTopic' : $(selId).text()
+				},
+				async : false,
+				success : function(res) {
+					var documents = res.documents;
+					for ( var i in documents) {
+						var title = documents[i].title;
+						console.log(title);
+						
+						var contents = documents[i].contents;
+						console.log(contents);
+						
+						var thumbnail = documents[i].thumbnail;
+						console.log(thumbnail);
+						
+						var url = documents[i].url;
+						console.log(url);
+						
+						var datetime = documents[i].datetime;
+						//console.log(datetime);
+						var blogname = documents[i].blogname;
+						//console.log(blogname);
+						
+						if(++i > 5)	break;
+						
+					}
+				}
+			})
+			
+			console.log('=======================================');
+
+		});
+	</script>
+</html>
